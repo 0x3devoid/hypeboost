@@ -12,9 +12,10 @@ import { ContractAbi, ContractAddress } from './config/constants/abi';
 
 export default function TokenDashboard() {
   const [totalRewards, setTotalRewards] = useState("0");
-  const [userRewards, setUserRewards] = useState("0");
+  const [userRewards, setUserRewards] = useState(0);
   const [tokenInfo, setTokenInfo] = useState({ name: "Hype Boost", symbol: "HBOOST" });
   const [isLoading, setIsLoading] = useState(false);
+  const [allHolders, setAllHolders] = useState(0);
 
   const { address, isConnected } = useWallet();
   const { walletProvider } = useWeb3ModalProvider();
@@ -45,13 +46,14 @@ export default function TokenDashboard() {
 
       // Get total rewards
       const totalDistributed = await contract.totalaccumulatedfee();
+      const allAddress = await contract.getAllHolders();
       setTotalRewards(formatEther(totalDistributed));
+      setAllHolders(allAddress.length);
 
       // Get user's rewards if connected
       if (isConnected && address) {
-        const allAddress = await contract.getAllHolders();
-        const userRewardsAmount = Number(totalRewards) / allAddress.length;
-        setUserRewards(userRewardsAmount.toString());
+        const userRewardsAmount = Number(formatEther(totalDistributed)) / allAddress.length;
+        setUserRewards(userRewardsAmount);
       }
     } catch (error) {
       console.error("Error fetching contract data:", error);
@@ -130,7 +132,7 @@ export default function TokenDashboard() {
                 <div className="bg-gray-700 p-6 rounded-lg">
                   <p className="text-gray-400 mb-2">Your Total Rewards</p>
                   <div className="flex items-end gap-2">
-                    <p className="text-4xl font-bold">{parseFloat(userRewards).toLocaleString()}</p>
+                    <p className="text-4xl font-bold">{userRewards}</p>
                     <p className="text-xl text-gray-400 mb-1">HYPE</p>
                   </div>
                 </div>
@@ -154,6 +156,10 @@ export default function TokenDashboard() {
                     })()}</p>
                   </div>
                 </div>
+
+                <div>
+                  <h2>Holders {allHolders} </h2>
+                  </div>
               </div>
             )}
           </div>
