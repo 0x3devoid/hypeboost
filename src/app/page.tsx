@@ -53,7 +53,7 @@ export default function TokenDashboard() {
       // Get user's rewards if connected
       if (isConnected && address && allAddress.includes(address)) {
         const userRewardsAmount = (Number(formatEther(totalDistributed)) * 0.0002) / allAddress.length;
-        setUserRewards(userRewardsAmount);
+        // setUserRewards(userRewardsAmount);
       }
     } catch (error) {
       console.error("Error fetching contract data:", error);
