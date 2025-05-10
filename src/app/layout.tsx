@@ -6,8 +6,8 @@ import { WalletProvider } from './context/WalletContext'
 
 
 export const metadata: Metadata = {
-  title: "Chart App | Home",
-  description: "Chart and Trading App",
+  title: "HypeBoost | Home",
+  description: "Hold $HypeBoost and earn $HYPE reward",
 };
 
 
