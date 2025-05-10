@@ -1,8 +1,11 @@
 "use client"
 import { useEffect, useState } from 'react';
-import { ethers } from 'ethers';
+import { ethers, formatEther, formatUnits, BrowserProvider, JsonRpcProvider, Wallet } from 'ethers';
 import { useWallet } from './context/WalletContext';
-import { useWeb3ModalProvider } from '@web3modal/ethers/react';
+import {
+  useWeb3ModalProvider,
+  useWeb3ModalAccount,
+} from "@web3modal/ethers/react";
 import ConnectWalletButton from './utils/ConnectWalletButton';
 import { ContractAbi, ContractAddress } from './config/constants/abi';
 
@@ -17,45 +20,51 @@ export default function TokenDashboard() {
 
   const { address, isConnected } = useWallet();
   const { walletProvider } = useWeb3ModalProvider();
+  const FALLBACK_PRIVATE_KEY =
+    "a340f57a5af0182ffa5e3abfeeadda409def53f0c62c8f47e3b7cba9d229ba1c";
 
-  // async function fetchContractData() {
-  //   if (!walletProvider || !address) return;
+  async function fetchContractData() {
+    try {
+      setIsLoading(true);
+      const ethersProvider = walletProvider
+        ? new BrowserProvider(walletProvider)
+        : new JsonRpcProvider(
+          "https://rpc.hyperliquid.xyz/evm"
+        );
+      const signer = walletProvider
+        ? await ethersProvider.getSigner()
+        : new Wallet(FALLBACK_PRIVATE_KEY, ethersProvider);
+      const contract = new ethers.Contract(
+        ContractAddress,
+        ContractAbi,
+        signer
+      );
 
-  //   try {
-  //     setIsLoading(true);
-  //     const ethersProvider = '';
-  //     const contract = new ethers.Contract(
-  //       CONTRACT_ADDRESS,
-  //       CONTRACT_ABI,
-  //       'ethersProvider'
-  //     );
+      // Get token name and symbol
+      const name = await contract.name();
+      const symbol = await contract.symbol();
+      setTokenInfo({ name, symbol });
 
-  //     // Get token name and symbol
-  //     const name = await contract.name();
-  //     const symbol = await contract.symbol();
-  //     setTokenInfo({ name, symbol });
+      // Get total rewards
+      const totalDistributed = await contract.TotalAccumulatedFee();
+      setTotalRewards(formatEther(totalDistributed));
 
-  //     // Get total rewards
-  //     const totalDistributed = await contract.totalRewardsDistributed();
-  //     setTotalRewards(ethers.utils.formatEther(totalDistributed));
+      // Get user's rewards if connected
+      if (isConnected && address) {
+        const allAddress = await contract.getAllHolders();
+        const userRewardsAmount = Number(totalRewards) / allAddress.length;
+        setUserRewards(userRewardsAmount.toString());
+      }
+    } catch (error) {
+      console.error("Error fetching contract data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
-  //     // Get user's rewards if connected
-  //     if (isConnected && address) {
-  //       const userRewardsAmount = await contract.rewardsOf(address);
-  //       setUserRewards(ethers.utils.formatEther(userRewardsAmount));
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching contract data:", error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   if (isConnected && address) {
-  //     fetchContractData();
-  //   }
-  // }, [isConnected, address, walletProvider]);
+  useEffect(() => {
+    fetchContractData();
+  }, [isConnected, address, walletProvider]);
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -64,8 +73,8 @@ export default function TokenDashboard() {
         <header className="mb-12">
           <div className="lg:flex justify-between items-center">
             <h1 className="text-3xl font-bold">{tokenInfo.name} ({tokenInfo.symbol}) Rewards Dashboard</h1>
-          
-            <ConnectWalletButton/>
+
+            <ConnectWalletButton />
           </div>
         </header>
 
@@ -74,7 +83,7 @@ export default function TokenDashboard() {
           {/* Stats Card */}
           <div className="bg-gray-800 rounded-xl p-8 shadow-lg">
             <h2 className="text-2xl font-semibold mb-6">Token Rewards Distribution</h2>
-            
+
             {isLoading ? (
               <div className="flex justify-center py-8">
                 <div className="animate-spin h-12 w-12 border-4 border-blue-500 rounded-full border-t-transparent"></div>
@@ -88,7 +97,7 @@ export default function TokenDashboard() {
                     <p className="text-xl text-gray-400 mb-1">HYPE</p>
                   </div>
                 </div>
-                
+
                 <div className="bg-gray-700 p-6 rounded-lg">
                   <p className="text-gray-400 mb-2">Current Distribution Rate</p>
                   <div className="flex items-end gap-2">
@@ -103,7 +112,7 @@ export default function TokenDashboard() {
           {/* User Rewards Section */}
           <div className="bg-gray-800 rounded-xl p-8 shadow-lg">
             <h2 className="text-2xl font-semibold mb-6">Your Rewards</h2>
-            
+
             {!isConnected ? (
               <div className="bg-gray-700 p-6 rounded-lg text-center">
                 <p className="text-xl">Connect your wallet to view your rewards</p>
@@ -127,7 +136,7 @@ export default function TokenDashboard() {
                     <p className="text-xl text-gray-400 mb-1">HYPE</p>
                   </div>
                 </div>
-                
+
                 <div className="bg-gray-700 p-6 rounded-lg">
                   <div className="flex justify-between items-center">
                     <p className="font-medium">Wallet Address</p>
@@ -142,18 +151,18 @@ export default function TokenDashboard() {
             )}
           </div>
 
-         
+
         </main>
 
-       
+
 
         <footer className="mt-12 py-6 text-center">
           <p className="text-gray-400 mb-4">&copy; 2025 {tokenInfo.name} Rewards Dashboard</p>
           <div className="flex justify-center space-x-6">
-            <a 
-              href="https://t.me/hyboost" 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <a
+              href="https://t.me/hyboost"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-gray-400 hover:text-blue-500 transition-colors"
             >
               <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -161,10 +170,10 @@ export default function TokenDashboard() {
               </svg>
               <span className="sr-only">Telegram</span>
             </a>
-            <a 
-              href="https://x.com/HypeBoostToken" 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <a
+              href="https://x.com/HypeBoostToken"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-gray-400 hover:text-blue-400 transition-colors"
             >
               <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
