@@ -47,12 +47,12 @@ export default function TokenDashboard() {
       // Get total rewards
       const totalDistributed = await contract.totalaccumulatedfee();
       const allAddress = await contract.getAllHolders();
-      setTotalRewards(Number(formatEther(totalDistributed)) * 0.004);
+      setTotalRewards(Number(formatEther(totalDistributed)) * 0.002);
       setAllHolders(allAddress.length);
 
       // Get user's rewards if connected
-      if (isConnected && address) {
-        const userRewardsAmount = (Number(formatEther(totalDistributed)) * 0.004) / allAddress.length;
+      if (isConnected && address && allAddress.includes(address)) {
+        const userRewardsAmount = (Number(formatEther(totalDistributed)) * 0.002) / allAddress.length;
         setUserRewards(userRewardsAmount);
       }
     } catch (error) {
@@ -93,7 +93,7 @@ export default function TokenDashboard() {
                 <div className="bg-gray-700 p-6 rounded-lg">
                   <p className="text-gray-400 mb-2">Total Rewards Distributed</p>
                   <div className="flex items-end gap-2">
-                    <p className="text-4xl font-bold">{totalRewards}</p>
+                    <p className="text-4xl font-bold">{totalRewards.toFixed(2)}</p>
                     <p className="text-xl text-gray-400 mb-1">HYPE</p>
                   </div>
                 </div>
@@ -129,7 +129,7 @@ export default function TokenDashboard() {
                 <div className="bg-gray-700 p-6 rounded-lg">
                   <p className="text-gray-400 mb-2">Your Total Rewards</p>
                   <div className="flex items-end gap-2">
-                    <p className="text-4xl font-bold">{userRewards}</p>
+                    <p className="text-4xl font-bold">{userRewards.toFixed(2)}</p>
                     <p className="text-xl text-gray-400 mb-1">HYPE</p>
                   </div>
                 </div>
