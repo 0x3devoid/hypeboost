@@ -44,7 +44,7 @@ export default function TokenDashboard() {
       setTokenInfo({ name, symbol });
 
       // Get total rewards
-      const totalDistributed = await contract.TotalAccumulatedFee();
+      const totalDistributed = await contract.totalaccumulatedfee();
       setTotalRewards(formatEther(totalDistributed));
 
       // Get user's rewards if connected
