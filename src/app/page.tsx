@@ -11,7 +11,7 @@ import { ContractAbi, ContractAddress } from './config/constants/abi';
 
 
 export default function TokenDashboard() {
-  const [totalRewards, setTotalRewards] = useState("0");
+  const [totalRewards, setTotalRewards] = useState(0);
   const [userRewards, setUserRewards] = useState(0);
   const [tokenInfo, setTokenInfo] = useState({ name: "Hype Boost", symbol: "HBOOST" });
   const [isLoading, setIsLoading] = useState(false);
@@ -47,7 +47,7 @@ export default function TokenDashboard() {
       // Get total rewards
       const totalDistributed = await contract.totalaccumulatedfee();
       const allAddress = await contract.getAllHolders();
-      setTotalRewards(formatEther(totalDistributed));
+      setTotalRewards(Number(formatEther(totalDistributed)) * 0.004);
       setAllHolders(allAddress.length);
 
       // Get user's rewards if connected
@@ -93,7 +93,7 @@ export default function TokenDashboard() {
                 <div className="bg-gray-700 p-6 rounded-lg">
                   <p className="text-gray-400 mb-2">Total Rewards Distributed</p>
                   <div className="flex items-end gap-2">
-                    <p className="text-4xl font-bold">{parseFloat(totalRewards).toLocaleString()}</p>
+                    <p className="text-4xl font-bold">{totalRewards}</p>
                     <p className="text-xl text-gray-400 mb-1">HYPE</p>
                   </div>
                 </div>
@@ -116,12 +116,9 @@ export default function TokenDashboard() {
             {!isConnected ? (
               <div className="bg-gray-700 p-6 rounded-lg text-center">
                 <p className="text-xl">Connect your wallet to view your rewards</p>
-                <button
-                  onClick={() => open()}
-                  className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors"
-                >
-                  Connect Wallet
-                </button>
+               <div className='flex justify-center mt-2'>
+               <ConnectWalletButton/>
+                </div>
               </div>
             ) : isLoading ? (
               <div className="flex justify-center py-8">
