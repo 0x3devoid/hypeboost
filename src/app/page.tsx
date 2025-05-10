@@ -16,6 +16,7 @@ export default function TokenDashboard() {
   const [tokenInfo, setTokenInfo] = useState({ name: "Hype Boost", symbol: "HBOOST" });
   const [isLoading, setIsLoading] = useState(false);
   const [allHolders, setAllHolders] = useState(0);
+  const [threshHold, setThreshHold] = useState("0")
 
   const { address, isConnected } = useWallet();
   const { walletProvider } = useWeb3ModalProvider();
@@ -46,6 +47,7 @@ export default function TokenDashboard() {
 
       // Get total rewards
       const totalDistributed = await contract.totalaccumulatedfee();
+      setThreshHold(formatEther(totalDistributed))
       const allAddress = await contract.getAllHolders();
       setTotalRewards(Number(formatEther(totalDistributed)) * 0.0002);
       setAllHolders(allAddress.length);
@@ -76,6 +78,9 @@ export default function TokenDashboard() {
 
             <ConnectWalletButton />
           </div>
+
+
+          <h3 className='mt-5 text-sm font-extrabold'>Threshold to Distribute {Number(threshHold).toFixed(2)} out of 50000.</h3>
         </header>
 
         {/* Main Dashboard */}
