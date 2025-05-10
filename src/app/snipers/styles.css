@@ -1,0 +1,152 @@
+.sniper__container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 20px;
+}
+
+.chart__header__item2 {
+    color: gray;
+}
+
+.chart__header__item2,
+.chart__header__item4 {
+    font-size: 12px;
+}
+
+.chart__header__item3 h1,
+.chart__header__item3 p {
+    color: rgba(119, 237, 145, 1);
+}
+
+.telegram__connect {
+    width: 100%;
+    color: #fff;
+    background: rgba(31, 31, 31, 1);
+    border: 1px solid rgba(31, 31, 31, 1);
+    font-size: 12px;
+    padding: 7px 15px;
+    cursor: pointer;
+}
+
+.trader__header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    border-bottom: 1.2px solid rgba(31, 31, 31, 1);
+}
+
+.trader__header button {
+    font-size: 14px;
+    color: gray;
+    cursor: pointer;
+    /* background-color: aqua; */
+    width: 100%;
+    padding: 5px 10px;
+}
+
+.trader__header .active__btn {
+    border-bottom: 1px solid rgba(119, 237, 145, 1);
+    background: linear-gradient(180deg, rgba(9, 135, 108, 0.1), rgba(15, 237, 190, 0.25));
+    color: rgba(119, 237, 145, 1);
+}
+
+.trader__header .active__btn__sell {
+    border-bottom: 1px solid rgb(204, 3, 3);
+    background: linear-gradient(180deg, rgb(158, 76, 76), rgb(214, 40, 40));
+    color: black;
+
+}
+
+.trade__option h3 {
+    color: gray;
+}
+
+.trade__option input {
+    border: 1px solid rgba(25, 25, 25, 1);
+    border-radius: 5px;
+    background: rgba(31, 31, 31, 1);
+    padding: 5px 10px;
+    width: 100%;
+}
+
+.trade__option input:focus {
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    outline: none;
+
+}
+
+.edit__amount{
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    margin-top: 10px;
+}
+.edit__amount span{
+    border: 1px solid rgba(25, 25, 25, 1);
+    padding: 3px 10px;
+    width: 60px;
+    font-size: 12px;
+    cursor: pointer;
+    background: rgba(25, 25, 25, 1);
+    border-radius: 50px;
+}
+
+.trade__option button{
+    margin-top: 30px;
+    width: 100%;
+    border: 1px solid rgba(119, 237, 145, 1);
+    border-radius: 30px;
+    padding: 5px;
+    cursor: pointer;
+    background-color: rgba(119, 237, 145, 1);
+    color: black;
+    font-weight: 900;
+}
+
+.trade__option .button__sell{
+    margin-top: 30px;
+    width: 100%;
+    border: 1px solid rgb(214, 40, 40);
+    border-radius: 30px;
+    padding: 5px;
+    cursor: pointer;
+    background-color: rgb(214, 40, 40);
+    color: black;
+    font-weight: 900;
+}
+
+.trade__info__header{
+    border: 1px solid rgba(31, 31, 31, 1);
+    border-radius: 5px;
+    background: rgba(31, 31, 31, 1);
+    color: #fff;
+    padding: 8px 10px;
+    width: 100%;
+}
+@media screen and (max-width: 700px) {
+
+    .sniper__container {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: 50px;
+    }
+
+    .trade__info p{
+        font-size: 12px;
+    }
+
+
+}
+
+
+@keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .spin {
+    animation: spin 2s linear infinite;
+  }
+  

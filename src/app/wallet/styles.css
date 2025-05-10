@@ -1,0 +1,46 @@
+.wallet__card__container{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.wallet__card{
+    display: grid;
+    /* justify-content: space-between;
+    align-items: center; */
+    gap: 10px;
+    border: 1px solid rgba(28, 28, 28, 1);
+    background-color: rgba(28, 28, 28, 1);
+    border-radius: 20px;
+    padding: 20px;
+    width: 350px;
+}
+
+/* .withdra__btn{
+    float: right;
+    display: flex;
+    justify-content: end;
+} */
+
+.wallet__item1{
+   display: flex;
+   justify-content: space-between;
+}
+
+.section__btn{
+    display: flex;
+    border: 1px solid green;
+    border-radius: 2px;
+    width: fit-content;
+}
+
+
+@media screen and (max-width: 750px){
+
+    .wallet__align{
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+}
