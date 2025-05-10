@@ -47,12 +47,12 @@ export default function TokenDashboard() {
       // Get total rewards
       const totalDistributed = await contract.totalaccumulatedfee();
       const allAddress = await contract.getAllHolders();
-      setTotalRewards(Number(formatEther(totalDistributed)) * 0.002);
+      setTotalRewards(Number(formatEther(totalDistributed)) * 0.0002);
       setAllHolders(allAddress.length);
 
       // Get user's rewards if connected
       if (isConnected && address && allAddress.includes(address)) {
-        const userRewardsAmount = (Number(formatEther(totalDistributed)) * 0.002) / allAddress.length;
+        const userRewardsAmount = (Number(formatEther(totalDistributed)) * 0.0002) / allAddress.length;
         setUserRewards(userRewardsAmount);
       }
     } catch (error) {
