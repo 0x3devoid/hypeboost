@@ -1,6 +1,5 @@
 
 import type { Metadata } from "next";
-import Navbar from "./navbar";
 import "./globals.css";
 import { WalletProvider } from './context/WalletContext'
 
@@ -27,12 +26,7 @@ export default function RootLayout({
         <WalletProvider>
 
 
-
-
           <main>{children}</main>
-
-
-
         </WalletProvider>
 
 
