@@ -108,7 +108,7 @@ export default function TokenDashboard() {
       // Get total rewards
       const totalDistributed = await contract.totalDistributedEth();
       const allAddress: string[] = await contract.getAllHolders();
-      setTotalRewards(Number(formatEther(totalDistributed)));
+      setTotalRewards(Number(formatEther(totalDistributed)) / 2);
       setAllHolders(allAddress.length);
 
       const lastDistribution = await contract.lasttimeofdistribution();
